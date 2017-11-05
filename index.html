@@ -1,70 +1,319 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Ansible</title>
-		
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/blood.css">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="author" content="Christian Göller">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
-		
-		<!-- Printing and PDF exports -->
-		<script>
-				var link = document.createElement( 'link' );
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-				document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+	<title>Ansible</title>
 
-				<section>
-					<section>Vertical Slide 1</section>
-					<section>Vertical Slide 2</section>
-				</section>
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/league.css">
 
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
 
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+			<section>
+				<h1>Ansible</h1>
+			</section>
+
+			<section data-markdown>
+				<textarea data-template>
+					* open source
+					* [www.ansible.com](https://www.ansible.com)
+					* current version: 2.4.1.0
+					* maintained by RedHat
+				</textarea>
+			</section>
+
+			<section data-markdown>
+				<textarea data-template>
+					a tool for
+					* deployment automation
+					* configuration management
+				</textarea>
+			</section>
+
+			<section data-markdown>
+				<textarea data-template>
+					## Differences to Puppet
+					* no master server
+					* no agents
+					* serial execution
+					* push vs. pull
+				</textarea>
+			</section>
+
+			<section>
 				<section data-markdown>
 					<textarea data-template>
-						## Page title
-				
-						A paragraph with some text and a [link](http://hakim.se).
+						## All you need is
+						* a control machine
+						* some target servers
+						* a little knowledge
 					</textarea>
 				</section>
 
-			</div>
+				<section data-markdown>
+					<textarea data-template>
+						## Control machine 
+						
+						(typically the users workstation)
+						* Linux
+						* Python 2/3
+						* SSH client
+						* and Ansible
+
+						Ansible is available via Pip, Yum, Apt, tar.gz ...
+
+						or as Docker Image `ansible/ansible` on DockerHub
+						</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## target servers
+
+						* Linux
+							* SSH
+							* Python 2.6
+						* Windows
+							* Powershell
+							</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Useful knowledge
+
+						* YAML
+						* General linux knowledge
+						* It's easy to learn
+					</textarea>
+				</section>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<textarea data-template>
+					## Ansible offers
+
+					* Idempotent execution !
+					* Lots of modules
+						* Linux administration
+						* VMWare ESX
+						* Docker
+						* ...
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+					## Ansible offers
+
+					* Authentication via SSH Key, Password
+					* Privilege escalation (sudo)
+					* Template engine Jinja2 (Turing complete)
+					* Differnt types of Plugins
+					* Check-Mode
+					* Vault for storing secrets
+					</textarea>
+				</section>
+			</section>
+
+			<section data-markdown>
+				<textarea data-template>
+					## How does it work
+
+					* connects using SSH to remote
+					* copy generated python code
+					* execute code
+					* Setup phase --> Fact gathering
+				</textarea>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<textarea data-template>
+							## How to use
+							
+							1. Ad-Hoc commands
+							2. Playbooks
+						</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+							## Ad-Hoc
+
+							* quick & dirty
+							* command line
+	
+							```bash
+							$ ansible my-server -m setup
+							$ ansible my-server [-m command] -a "/sbin/reboot"
+							```
+						</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+							## Playbooks
+	
+							* Playbooks are code
+							* typically stored in SCM
+
+							```bash
+							$ ansible-playbook my-playbook.yml
+							$ ansible-playbook -i inventories/my-site.ini my-playbook.yml
+							```
+						</textarea>
+				</section>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<textarea data-template>
+						## Elements
+
+						* Inventory
+						* Task
+						* Playbook
+						* Role
+						* Variable
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Inventory
+
+						* Ini-file syntax
+						* Contains host groups
+						* Variables per host or host group
+						* Groups can be hierarchical
+						* Wildcards for server names
+						* Inventory scripts / plugins
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Task
+
+						* Specifies what to to
+							* Module + parameters
+						* Options
+						* Conditions
+						* Loops
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Playbook
+						* Contains plays
+							* specifies targets (host groups)
+							* contains tasks
+							* can include roles
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Role
+
+						* Reusable
+						* Contains tasks
+						* Can include other roles
+						* Defines default variables
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Variable
+
+						Can be defined in 
+						* Role
+						* Playbook
+						* Inventory
+						* Command Line
+	
+						* [Variable precedence](http://docs.ansible.com/ansible/latest/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable) list contains 21 entries
+
+					</textarea>
+				</section>
+			</section>
+
+			<section data-markdown>
+				<textarea data-template>
+					### Ansible Tower
+					commercial web based UI for Ansible
+
+					### Ansible Galaxy
+					Online repository for sharing roles
+				</textarea>
+			</section>
+
+			<section data-markdown>
+				<textarea data-template>
+					# The end.
+					</textarea>
+			</section>
 		</div>
+	</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>	
+	<!-- Script loading library, needed to load plugins -->
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				// Display the page number of the current slide
-				slideNumber: true,
-				
-				// Transition style
-				transition: 'convex', // none/fade/slide/convex/concave/zoom
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			// Display the page number of the current slide
+			slideNumber: true,
+			showSlideNumber: 'speaker',
 
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>		
-	</body>
+			// Push each slide change to the browser history
+			history: true,
+
+			// Transition style
+			transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+			dependencies: [
+				// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+				{ src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+
+				// Interpret Markdown in <section> elements
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+
+				// Speaker notes
+				{ src: 'plugin/notes/notes.js', async: true },
+
+				// Syntax highlight for <code> elements
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
 </html>
