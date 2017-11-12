@@ -1,0 +1,19 @@
+---
+# This is a play
+- name: Test
+  gather_facts: yes
+  hosts: my-server
+  tasks:
+  # This is a task
+  - name: Print server info
+    debug:
+      msg: "The host name is: {{ ansible_hostname }}"
+  
+  - name: Print a variable
+    debug:
+      var: ansible_default_ipv4
+
+- name: Execute a role
+  hosts: my-server
+  roles:
+    - demo

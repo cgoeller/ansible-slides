@@ -1,0 +1,5 @@
+---
+zypper_repos: {}
+yum_repos: {}
+ntp_servers: []
+ntp_service_name: ntp

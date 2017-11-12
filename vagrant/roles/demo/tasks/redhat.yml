@@ -1,0 +1,62 @@
+---
+- name: Add yum repository
+  become: true
+  yum_repository:
+    name: "{{ item.key }}"
+    description: "{{ item.key }}"
+    baseurl: "{{ item.value }}"
+    state: present
+    gpgcheck: no
+  with_dict: "{{ yum_repos }}"
+  register: yumrepo
+
+- name: Yum clean all
+  become: true
+  command: yum clean all -y
+  args:
+    warn: no  
+  when: yumrepo | changed
+
+- name: Yum makecache
+  become: true
+  command: yum makecache
+  args:
+    warn: no  
+  when: yumrepo | changed
+
+# Install some useful tools
+# bash-completion is needed for docker CLI
+- name: Install basic packages with yum
+  become: true
+  yum:
+    name: "{{item}}"
+    state: present
+    disable_gpg_check: yes
+  with_items:
+    - dos2unix
+    - iftop
+    - iotop
+    - atop
+    - htop
+    - bash-completion
+    - jq
+    - curl
+    - traceroute
+    - unzip
+    - mc
+    - psmisc
+    - bind-utils
+    - lsof
+
+- name: Write chronyd config
+  become: true
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+
+- name: Restart chronyd service
+  become: true
+  service:
+    name: chronyd
+    enabled: yes
+    state: restarted

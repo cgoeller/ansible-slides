@@ -1,0 +1,5 @@
+---
+# Variables for the host 'localhost' go here
+
+# Connection mode
+ansible_connection: local

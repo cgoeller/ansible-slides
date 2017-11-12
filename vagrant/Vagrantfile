@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.require_version(">=1.9")
+
+Vagrant.configure("2") do |config|
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  config.vm.box = "minimal/xenial64"
+  config.vm.hostname = "ansible"
+
+  # Configure virtual hardware
+  config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = false
+    # Name in VirtualBox GUI
+    vb.name = "ansible"
+    # Customize the amount of memory on the VM
+    vb.memory = "1024"
+    # Customize CPUs
+    vb.cpus = 1
+    # Enable host's resolver as a DNS proxy in NAT mode
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  # Update virtual box guest additions
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = true
+  end
+  
+  # Provisioning
+  config.vm.provision "basics", type: "shell", privileged: true, inline: <<-SHELL
+    apt-get update
+    apt-get install -y sshpass python-pip
+    pip install --upgrade pyvmomi ansible==2.4.1.0
+  SHELL
+
+  config.vm.provision "test_ansible", type: "ansible_local" do |ansible|
+    ansible.install = false
+    ansible.verbose = true
+    ansible.playbook = "helloworld.yml"
+  end
+   
+end

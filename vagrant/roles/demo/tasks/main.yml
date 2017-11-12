@@ -1,0 +1,13 @@
+---
+- name: Load os specific variables
+  include_vars: 
+    file: "{{ ansible_distribution | lower }}.yml"
+  
+- name: Include os specific tasks
+  include_tasks: "{{ ansible_distribution | lower }}.yml"
+
+- name: Increase maximum map count for Elasticsearch
+  become: true
+  sysctl:
+    name: vm.max_map_count
+    value: 1048575

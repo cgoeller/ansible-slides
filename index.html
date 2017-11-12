@@ -34,9 +34,12 @@
 
 			<section data-markdown>
 				<textarea data-template>
-					a tool for
-					* deployment automation
+					a tool for automation of
+					* application deployment
 					* configuration management
+					* cloud provisioning
+					* ad-hoc task-execution
+					* multinode orchestration
 				</textarea>
 			</section>
 
@@ -132,6 +135,7 @@
 					* Differnt types of Plugins
 					* Check-Mode
 					* Vault for storing secrets
+					* Rolling updates
 					</textarea>
 				</section>
 			</section>
@@ -141,9 +145,9 @@
 					## How does it work
 
 					* connects using SSH to remote
+					* Setup phase --> Fact gathering
 					* copy generated python code
 					* execute code
-					* Setup phase --> Fact gathering
 				</textarea>
 			</section>
 
@@ -161,11 +165,11 @@
 					<textarea data-template>
 							## Ad-Hoc
 
-							* quick & dirty
-							* command line
+							quick & dirty from the command line
 	
 							```bash
 							$ ansible my-server -m setup
+							$ ansible my-server -a "uname -a"
 							$ ansible my-server [-m command] -a "/sbin/reboot"
 							```
 						</textarea>

@@ -1,0 +1,39 @@
+---
+- name: Install basic packages with apt
+  become: true
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - dos2unix
+    - iftop
+    - iotop
+    - atop
+    - htop
+    - ntp
+    - bash-completion
+    - jq
+    - curl
+    - traceroute
+    - nmon
+    - nfs-common
+    - unzip
+    - mc
+
+- name: Configure NTP service
+  become: true
+  lineinfile:
+    dest: /etc/ntp.conf
+    state: present
+    line: "server {{ item }} iburst"
+  with_items: "{{ ntp_servers }}"
+  notify:
+    - restart ntp
+
+- name: Enable NTP service
+  become: true
+  service:
+    name: "{{ ntp_service_name }}"
+    enabled: yes
+    state: restarted
+  when: ntp_servers|length > 0
