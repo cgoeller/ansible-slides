@@ -1,6 +1,6 @@
 ---
 - name: Say hello
-  hosts: default
+  hosts: my-server
   tasks:
     - name: Print info
       debug:
